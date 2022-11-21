@@ -7,5 +7,5 @@ int main()
    int a = 5;
    a>0?a++:1;
    printf("%d",a);
-    
+   
 }
