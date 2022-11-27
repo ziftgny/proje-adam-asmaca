@@ -26,11 +26,30 @@ void kelimedondur(char *pKelime){
 
 }
 
+void sekil(int *hak){
+    for(int i =0;i<17;i++){
+         printf("-");
+    }
+    printf("\n");
+    for(int j =0;j<8;j++){
+       
+        printf("|");
+        j==0?printf("               |"):1;
+        printf("\n");
+    }
+   
+}
+
 
 void main() {
     SetConsoleOutputCP(65001);
-    char rastgelekelime[100]; //max 100 karakter satir basi
+    char rastgelekelime[100]; //max 100 karakter satir
     char *prastgelekelime = rastgelekelime;
     kelimedondur(prastgelekelime);
-    printf("%s",rastgelekelime);
+    int hak=6;
+    int *phak=&hak;
+    //do {
+        sekil(phak);
+
+    //}while(hak!=0)
 }
