@@ -10,7 +10,7 @@ void kelimedondur(char *pKelime){
      srand(time(0)); 
     FILE *pF;
     pF = fopen("kelimeler.txt","r");  
-    char txtdepo[100];          // satir başı 100 karakter
+    char txtdepo[100];          // satir başı 100 karakter   Nİ TE Fİ SE
     int satir = 1;  
     int rastgelesayi = rand()%100+1;  //sececegimiz rastgele satırın belirlenmesi    
     while(fgets(txtdepo,100,pF)){   //fgets dökümanın sonuna ulaştığında null dönderir
@@ -26,17 +26,18 @@ void kelimedondur(char *pKelime){
 
 }
 
-void sekil(int *hak){
-    for(int i =0;i<17;i++){
-         printf("-");
+void sekil(int hak){
+    switch (hak)
+    {
+    case 6:printf("____\n|\n|\n|\n|\n");break;
+    case 5:printf("____\n|  O\n|\n|\n|\n");break;
+    case 4:printf("____\n|  O\n|  | \n|\n|\n");break;
+    case 3:printf("____\n|  O\n| /| \n|\n|\n");break;
+    case 2:printf("____\n|  O\n| /|\\\n|\n|\n");break;
+    case 1:printf("____\n|  O\n| /|\\\n| /  \n|\n");break;
+    case 0:printf("____\n|  O\n| /|\\\n| / \\\n|\n");break;
     }
-    printf("\n");
-    for(int j =0;j<8;j++){
-       
-        printf("|");
-        j==0?printf("               |"):1;
-        printf("\n");
-    }
+
    
 }
 
@@ -47,9 +48,24 @@ void main() {
     char *prastgelekelime = rastgelekelime;
     kelimedondur(prastgelekelime);
     int hak=6;
-    int *phak=&hak;
-    //do {
-        sekil(phak);
+    char girilenharf;  //basically isteyeceğimiz harf
+    int kontrol=0;   //string dizisinde istediğimiz harften varsa bunu arttıracagız ve bu deger 0 olmazsa demek ki
+                    //dizide istediğimiz karakterden var bu sekilde hakkımız azalmaz tam tersi ise azaltmamız gerekir
+    do {
+        printf("%s",rastgelekelime); // kontrol için
+        printf("harf giriniz\n");
+        scanf("%c",&girilenharf);
+       for(int i =0;i<strlen(rastgelekelime);i++){
+        
+            if(rastgelekelime[i]==girilenharf){ //karsılastırma
+                kontrol++;
+            }
+       }
+        if(kontrol==0){ //stringdeki hicbir karakter uyusmuyorsa hakkı bir azalt
+            hak--;
+        }
+        sekil(hak);
+        kontrol = 0; //dongu biterken kontrol degiskenini sıfırlamak önemli
 
-    //}while(hak!=0)
+    }while(hak!=0);
 }
