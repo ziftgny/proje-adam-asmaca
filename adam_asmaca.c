@@ -59,16 +59,15 @@ void main() {
     int uzunluk=strlen(rastgelekelime);
     int hak=6;
     int bulunansayisi=0;
-    char girilenharf;  //isteyeceğimiz harf
+    char girilenharf=1;  //isteyeceğimiz harf
     int kontrol=0;   //string dizisinde istediğimiz harften varsa bunu arttıracagız ve bu deger 0 olmazsa demek ki
                     //dizide istediğimiz karakterden var bu sekilde hakkımız azalmaz tam tersi ise azaltmamız gerekir 
     char *kelimedurum; //kelimenin son hali için yeni bir dizi
-    kelimedurum = (char *)malloc(uzunluk + 1 * sizeof(char));// Bulunan harflerin saklanaacagi dizi icin bellek ayır
+    kelimedurum = (char *)malloc(uzunluk + 1 * sizeof(char));// Bulunan harflerin saklanacagi dizi icin bellek ayır
     altTirele(kelimedurum, uzunluk);// Bulunan harflerin saklanacagi diziyi alt-tirele
-
     do{
         printf("%s",rastgelekelime); // kontrol için
-        printf("harf giriniz\n");
+        printf("Harf giriniz\n");
         scanf("%c",&girilenharf);
         for(int i=0; i<uzunluk ;i++){
             if(rastgelekelime[i]==girilenharf){ //karsılastırma
@@ -94,11 +93,11 @@ void main() {
     printf("Oyun bitti!\n");
     if(hak==0){
         printf("Kaybettiniz!\n");
-        printf("Aranana kelime: %s", rastgelekelime);
+        printf("Aranan kelime: %s", rastgelekelime);
     }
     else{
         printf("Kazandınız!");
     }
-    //Ayırdıgın bellek alanını serbest bırak
-	free(kelimedurum);
+    
+	free(kelimedurum);//Ayırdıgın bellek alanını serbest bırak
 }
