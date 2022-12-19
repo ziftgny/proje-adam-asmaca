@@ -6,7 +6,7 @@
 #include <math.h>
 #include <windows.h>
 
-void kelimedondur(char *pKelime){
+void kelimedondur(char *pKelime){       //rastgele kelime seçme fonksiyonu
      srand(time(0)); 
     FILE *pF;
     pF = fopen("kelimeler.txt","r");  
@@ -23,11 +23,11 @@ void kelimedondur(char *pKelime){
         satir++;
     }   
    
-    fclose(pF); // it is always a good habit
+    fclose(pF);
 
 }
 
-void sekil(int hak){
+void sekil(int hak){                     //kalan hak sayısına göre şekili yazdıracak fonksiyon
     switch (hak)
     {
     case 6:printf("____\n|\n|\n|\n|\n");break;
@@ -40,64 +40,69 @@ void sekil(int hak){
     }
 }
 
-void altTirele(char *dizi, int boyut){
-	int i;
-	
-	for( i=0; i<boyut-1; i++ ){
-		dizi[i] = '_';
-	}
-	
-	// En sonuna terminator karakterini koy
-	dizi[i] = '\0';
-}
-
 void main() {
-    SetConsoleOutputCP(65001); //türkçe karakterler için
-    char rastgelekelime[100]; //max 100 karakter satir
+    SetConsoleOutputCP(65001);                        //türkçe karakterler için
+    char rastgelekelime[20];                          //rastgele kelime seçimi için
     char *prastgelekelime = rastgelekelime;
     kelimedondur(prastgelekelime);
-    int uzunluk=strlen(rastgelekelime);
+
+    int uzunluk=strlen(rastgelekelime)-1;
     int hak=6;
-    int bulunansayisi=0;
-    char girilenharf=1;  //isteyeceğimiz harf
-    int kontrol=0;   //string dizisinde istediğimiz harften varsa bunu arttıracagız ve bu deger 0 olmazsa demek ki
-                    //dizide istediğimiz karakterden var bu sekilde hakkımız azalmaz tam tersi ise azaltmamız gerekir 
-    char *kelimedurum; //kelimenin son hali için yeni bir dizi
-    kelimedurum = (char *)malloc(uzunluk + 1 * sizeof(char));// Bulunan harflerin saklanacagi dizi icin bellek ayır
-    altTirele(kelimedurum, uzunluk);// Bulunan harflerin saklanacagi diziyi alt-tirele
+    char girilenharf='0';                             
+    int kontrol=0;                                    //kelimede girilen harf varsa 1 değerini alır
+    int bulunanSayisi=0;
+    int yenidenGir=0;                                 //harf daha önce girildiyse bu değişken 1 değerini alacak
+    int sirano=0;                                     //girilen harfin kaçıncı olduğu
+
+    char kelimedurum[uzunluk+1];                      //bulacağımız kelimenin son hali için yeni bir dizi
+    memset(kelimedurum, '_', sizeof(kelimedurum));    //kelimedurum'un tüm karakterlerini alt-tirele
+    kelimedurum[uzunluk]='\0';
+    char girilenharfler[20];
+    memset(girilenharfler, '\0', sizeof(girilenharfler));
+
     do{
-        printf("%s",rastgelekelime); // kontrol için
         printf("Harf giriniz\n");
-        scanf("%c",&girilenharf);
-        for(int i=0; i<uzunluk ;i++){
-            if(rastgelekelime[i]==girilenharf){ //karsılastırma
+        do{
+            yenidenGir=0;
+            fflush(stdin);                            //buffer temizleme
+            scanf("%c",&girilenharf);
+            system("cls");
+            for(int i=0; i<20; i++){                 //harfin daha önce girilip girilmediğinin kontrolü
+                if(girilenharfler[i]==girilenharf){
+                yenidenGir=1;
+                }
+            }
+            if(yenidenGir==1)                       //girildiyse tekrar harf istenir
+                printf("%c daha önce girildi.\nYeni bir harf giriniz:", girilenharf);
+
+            girilenharfler[sirano]=girilenharf;     //girilen harf diziye atanır
+            sirano++;
+        }while(yenidenGir==1);
+
+        for(int i=0; i<uzunluk ;i++){                //girilen harf kelimede var mı
+            if(rastgelekelime[i]==girilenharf){
                 kontrol++;
                 kelimedurum[i]=girilenharf;
-                bulunansayisi++;
+                bulunanSayisi++;
             }
         }
-        if(kontrol==0){
+        if(kontrol==0){                              //yanlış harf girildiyse hak düşer
             hak--;
         }
-        else{
-            printf("Bildiniz!\n");
-        }
-        sekil(hak);
-        kontrol = 0; //dongu biterken kontrol degiskenini sıfırlamak önemli
-        printf("Kelimenin son durumu:");
-        puts(kelimedurum);
-        getchar(); //buffer'dan enter karakterini okur
-        printf("\n");
-    }while(hak!=0 && bulunansayisi!=uzunluk-1);
+        printf("Daha once girilen harfler: ");
+        puts(girilenharfler);                       //girilen harfleri görüntüler
+        sekil(hak); 
+        printf("Kelimenin son durumu:");            
+        puts(kelimedurum);                          //bulunan ve bulunamayan harfleri kelime içinde gösterir
+        kontrol = 0;                                
+    }while(hak!=0 && bulunanSayisi!=uzunluk);       //hak sıfırlanınca ya da tüm harfler bulununca döngüden çıkılır
     
     printf("Oyun bitti!\n");
-    if(hak==0){
+    if(hak==0){                                     //kaybetme durumu
         printf("Kaybettiniz!\n");
         printf("Aranan kelime: %s", rastgelekelime);
     }
     else{
-        printf("Kazandınız!");
+        printf("Kazandınız!");                      //kazanma durumu
     }
-    
-	free(kelimedurum);//Ayırdıgın bellek alanını serbest bırak
 }
