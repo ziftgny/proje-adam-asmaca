@@ -11,20 +11,17 @@ void kelimedondur(char *pKelime){       //rastgele kelime seçme fonksiyonu
     FILE *pF;
     pF = fopen("kelimeler.txt","r");  
 
-    char txtdepo[20];          // satir başı 20 karakter
+    char txtdepo[100];          // satir başı 100 karakter
     int satir = 1;  
     int rastgelesayi = rand()%100+1;  //sececegimiz rastgele satırın belirlenmesi    
-    while(fgets(txtdepo,20,pF)){   //fgets dökümanın sonuna ulaştığında null dönderir
+    while(fgets(txtdepo,100,pF)){   //fgets dökümanın sonuna ulaştığında null dönderir
         if(satir==rastgelesayi){
             strcpy(pKelime,txtdepo); //satir 1 den baslayacağı için rastgele satırla eşlenene kadar çevirip o satırdaki
                                     //kelimeyi kopyalar
         }
-        
         satir++;
     }   
-   
     fclose(pF);
-
 }
 
 void sekil(int hak){                     //kalan hak sayısına göre şekili yazdıracak fonksiyon
@@ -71,10 +68,13 @@ void main() {
                 yenidenGir=1;
                 }
             }
-            if(yenidenGir==1)                       //girildiyse tekrar harf istenir
+            if(yenidenGir==1){                      //girildiyse tekrar harf istenir
                 printf("%c daha önce girildi.\nYeni bir harf giriniz:", girilenharf);
-
+                sirano--;
+            }
+            else{
             girilenharfler[sirano]=girilenharf;     //girilen harf diziye atanır
+            }  
             sirano++;
         }while(yenidenGir==1);
 
@@ -89,7 +89,10 @@ void main() {
             hak--;
         }
         printf("Daha once girilen harfler: ");
-        puts(girilenharfler);                       //girilen harfleri görüntüler
+        for(int i=0; i<20; i++){                       //girilen harfleri görüntüler
+            printf("%c ", girilenharfler[i]);
+        }
+        printf("\n");                    
         sekil(hak); 
         printf("Kelimenin son durumu:");            
         puts(kelimedurum);                          //bulunan ve bulunamayan harfleri kelime içinde gösterir
