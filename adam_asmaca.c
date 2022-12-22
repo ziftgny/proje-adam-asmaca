@@ -4,6 +4,7 @@
 #include <time.h>
 #include <windows.h>
 
+
 void kelimedondur(char *pKelime){       //rastgele kelime seçme fonksiyonu
      srand(time(0)); 
     FILE *pF;
@@ -69,8 +70,7 @@ do{
             yenidenGir=0;
             
             do{                                        //doğru input alınması için döngü
-                dogruGiris=0;
-                fflush(stdin);                           //buffer temizleme                            
+                dogruGiris=0;                   
                 girilenharf=getch();
             
                 if(girilenharf<=122 && girilenharf>=97){ //ascii 122 = 'z', 97 = 'a'
@@ -136,7 +136,6 @@ do{
     printf("\nYeniden oynamak için herhangi bir tuşa, çıkmak için q'ya basınız.");
     printf("\n-----------------------------------------------------------------");
 
-    fflush(stdin);
     yenidenoyna=getch();
 
 }while(yenidenoyna!='q');
