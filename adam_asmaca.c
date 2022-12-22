@@ -2,8 +2,6 @@
 #include <string.h>
 #include <conio.h>
 #include <time.h>
-#include <stdlib.h>
-#include <math.h>
 #include <windows.h>
 
 void kelimedondur(char *pKelime){       //rastgele kelime seçme fonksiyonu
@@ -11,10 +9,10 @@ void kelimedondur(char *pKelime){       //rastgele kelime seçme fonksiyonu
     FILE *pF;
     pF = fopen("kelimeler.txt","r");  
 
-    char txtdepo[100];          // satir başı 100 karakter
+    char txtdepo[20];          // satir başı 20 karakter
     int satir = 1;  
     int rastgelesayi = rand()%100+1;  //sececegimiz rastgele satırın belirlenmesi    
-    while(fgets(txtdepo,100,pF)){   //fgets dökümanın sonuna ulaştığında null dönderir
+    while(fgets(txtdepo,20,pF)){   //fgets dökümanın sonuna ulaştığında null dönderir
         if(satir==rastgelesayi){
             strcpy(pKelime,txtdepo); //satir 1 den baslayacağı için rastgele satırla eşlenene kadar çevirip o satırdaki
                                     //kelimeyi kopyalar
