@@ -25,6 +25,7 @@ void kelimedondur(char *pKelime){       //rastgele kelime seçme fonksiyonu
 }
 
 void sekil(int hak){                     //kalan hak sayısına göre şekili yazdıracak fonksiyon
+    printf("\n");
     switch (hak)
     {
     case 6:printf("____\n|\n|\n|\n|\n");break;
@@ -39,16 +40,24 @@ void sekil(int hak){                     //kalan hak sayısına göre şekili ya
 
 void main() {
     SetConsoleOutputCP(65001);                        //türkçe karakterler için
+    char yenidenoyna='1';                             //oyundan çıkmak için 0 olmalı
+
+do{ 
+    system("cls");
+    printf("\n--------------------------------");
+    printf("\nAdam asmaca oyununa hoşgeldiniz!");
+    printf("\n--------------------------------");
+    
     char rastgelekelime[20];                          //rastgele kelime seçimi için
     kelimedondur(rastgelekelime);
-
     int uzunluk=strlen(rastgelekelime)-1;
     int hak=6;
     char girilenharf='0';                             
-    int kontrol=0;                                    //kelimede girilen harf varsa 1 değerini alır
+    int kontrol=0;                                    //kelimede girilen harf varsa = 1
     int bulunanSayisi=0;
-    int yenidenGir=0;                                 //harf daha önce girildiyse bu değişken 1 değerini alacak
+    int yenidenGir=0;                                 //harf daha önce girildiyse = 1
     int sirano=0;                                     //girilen harfin kaçıncı olduğu
+    int dogruGiris=0;                                 //giriş değerinin istenen bir değer ise = 1
 
     char kelimedurum[uzunluk+1];                      //bulacağımız kelimenin son hali için yeni bir dizi
     memset(kelimedurum, '_', sizeof(kelimedurum));    //kelimedurum'un tüm karakterlerini alt-tirele
@@ -56,26 +65,41 @@ void main() {
     char girilenharfler[20];
     memset(girilenharfler, '\0', sizeof(girilenharfler));
 
-    do{
-        printf("Harf giriniz\n");
-        do{
+    do{                                                //oyun döngüsü
+        printf("\n-----Harf giriniz-----\n");  
+        do{                                            //input alma döngüsü
             yenidenGir=0;
-            fflush(stdin);                            //buffer temizleme
-            scanf("%c",&girilenharf);
-            system("cls");
+            
+            do{                                        //doğru input alınması için döngü
+                dogruGiris=0;
+                fflush(stdin);                           //buffer temizleme                            
+                girilenharf=getch();
+            
+                if(girilenharf<=122 && girilenharf>=97){ //ascii 122 = 'z', 97 = 'a'
+                    dogruGiris=1;
+                }else{
+                    system("cls");
+                    printf("Hatalı giriş yaptınız!\nTekrar giriş yapınız.\n");
+                }
+
+            }while(dogruGiris==0);
+            
+            system("cls");                              //ekranı temizler
+            
             for(int i=0; i<20; i++){                 //harfin daha önce girilip girilmediğinin kontrolü
                 if(girilenharfler[i]==girilenharf){
                 yenidenGir=1;
                 }
             }
+            
             if(yenidenGir==1){                      //girildiyse tekrar harf istenir
                 printf("%c daha önce girildi.\nYeni bir harf giriniz:", girilenharf);
-                sirano--;
             }
             else{
             girilenharfler[sirano]=girilenharf;     //girilen harf diziye atanır
-            }  
             sirano++;
+            }
+
         }while(yenidenGir==1);
 
         for(int i=0; i<uzunluk ;i++){                //girilen harf kelimede var mı
@@ -85,26 +109,41 @@ void main() {
                 bulunanSayisi++;
             }
         }
+        
         if(kontrol==0){                              //yanlış harf girildiyse hak düşer
             hak--;
         }
+        
         printf("Daha once girilen harfler: ");
         for(int i=0; i<20; i++){                       //girilen harfleri görüntüler
             printf("%c ", girilenharfler[i]);
-        }
-        printf("\n");                    
-        sekil(hak); 
-        printf("Kelimenin son durumu:");            
-        puts(kelimedurum);                          //bulunan ve bulunamayan harfleri kelime içinde gösterir
-        kontrol = 0;                                
+        }                   
+        sekil(hak);                                    //şekili yazdırır
+        printf("Kelimenin son durumu: %s\n", kelimedurum); //bulunan ve bulunamayan harfleri kelime içinde gösterir
+        
+        kontrol = 0;
+
     }while(hak!=0 && bulunanSayisi!=uzunluk);       //hak sıfırlanınca ya da tüm harfler bulununca döngüden çıkılır
     
-    printf("Oyun bitti!\n");
+    printf("\n-----Oyun bitti!-----\n");
     if(hak==0){                                     //kaybetme durumu
-        printf("Kaybettiniz!\n");
+        printf("     Kaybettiniz!     \n");
         printf("Aranan kelime: %s", rastgelekelime);
     }
     else{
-        printf("Kazandınız!");                      //kazanma durumu
+        printf("     Kazandınız!     ");                      //kazanma durumu
     }
+
+    printf("\n-----------------------------------------------------------------");
+    printf("\nYeniden oynamak için herhangi bir tuşa, çıkmak için q'ya basınız.");
+    printf("\n-----------------------------------------------------------------");
+
+    fflush(stdin);
+    yenidenoyna=getch();
+
+}while(yenidenoyna!='q');
+printf("\n-----------------------------");
+printf("\nOynadığınız için teşekkürler!");
+printf("\n-----------------------------");
+
 }
